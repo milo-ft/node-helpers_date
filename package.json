@@ -4,7 +4,7 @@
   "description": "Date utilities",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine-node spec"
+    "test": "./node_modules/.bin/eslint --ext .js lib/* && jasmine-node spec"
   },
   "author": "efigueroa@jooycar.cl",
   "license": "ISC",
@@ -12,6 +12,8 @@
     "lodash": "^4.13.1"
   },
   "devDependencies": {
+    "eslint": "^2.11.0",
+    "eslint-config-es5": "^0.5.0",
     "jasmine-node": "^1.14.5"
   }
 }
