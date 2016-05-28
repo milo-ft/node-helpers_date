@@ -1,0 +1,17 @@
+{
+  "name": "date",
+  "version": "1.0.0",
+  "description": "Date utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node spec"
+  },
+  "author": "efigueroa@jooycar.cl",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.13.1"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
