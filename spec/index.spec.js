@@ -27,6 +27,61 @@ describe('timestampFromFormat & error handler', function() {
         timestamp: timestamp - 12 * 3600 * 1000
       },
 
+      { // mm-dd-yyyy
+        string: '05-27-2016',
+        formats: 'mm-dd-yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      { // with one digit
+        string: '5-27-2016',
+        formats: 'mm-dd-yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      {
+        string: '5-1-2016',
+        formats: 'mm-dd-yyyy',
+        timestamp: 1462060800000
+      },
+      { // dd/mm/yyyy
+        string: '27/05/2016',
+        formats: 'dd/mm/yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      { // with one digit month
+        string: '27/5/2016',
+        formats: 'dd/mm/yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      { // with one digit month and day
+        string: '1/5/2016',
+        formats: 'dd/mm/yyyy',
+        timestamp: 1462060800000
+      },
+      { // dd/mm
+        string: '27/05',
+        formats: 'dd/mm',
+        timestamp: 12614400000
+      },
+      { // with one digit month
+        string: '27/5',
+        formats: 'dd/mm',
+        timestamp: 12614400000
+      },
+      { // with one digit month and day
+        string: '1/5',
+        formats: 'dd/mm',
+        timestamp: 10368000000
+      },
+      { // hh:mm
+        string: '14:37',
+        formats: 'hh:mm',
+        timestamp: 52620000
+      },
+      { // with one digit hr
+        string: '9:21',
+        formats: 'hh:mm',
+        timestamp: 33660000
+      },
       { // dd/mm/yyyy hh:ii:ss
         string: '27/05/2016 12:00:00',
         formats: 'dd/mm/yyyy hh:ii:ss',
@@ -112,7 +167,31 @@ describe('timestampToFormat', function() {
         format: 'yyyymmdd',
         timestamp: timestamp - 12 * 3600 * 1000
       },
-
+      { // mm-dd-yyyy
+        string: '05-27-2016',
+        format: 'mm-dd-yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      { // dd/mm/yyyy
+        string: '27/05/2016',
+        format: 'dd/mm/yyyy',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+      { // dd/mm
+        string: '27/05',
+        format: 'dd/mm',
+        timestamp: 12614400000
+      },
+      { // hh:mm
+        string: '14:37',
+        format: 'hh:mm',
+        timestamp: 52620000
+      },
+      { // with one digit hr
+        string: '09:21',
+        format: 'hh:mm',
+        timestamp: 33660000
+      },
       { // dd/mm/yyyy hh:ii:ss
         string: '27/05/2016 12:00:00',
         format: 'dd/mm/yyyy hh:ii:ss',
@@ -160,8 +239,8 @@ describe('timestampToFormat', function() {
     expect(d).toBe(timestamp);
 
     // Not selected formats
-    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', ['yymmddhhiiss']);
-    expect(b).toBe(0);
+    var e = date.timestampFromFormat('2016-05-27 12:00:00.000', ['yymmddhhiiss']);
+    expect(e).toBe(0);
   });
 
   it('should call handler error with invalid format date', function() {
@@ -175,17 +254,17 @@ describe('timestampToFormat', function() {
   });
 });
 
-//describe('toArray', function() {
-//  it('should return the default date format', function() {
-//    var t = date.toString(timestamp);
-//    expect(t).toBe('2016-05-27T12:00:00.000Z');
-//  });
-//
-//  it('should return the default date format', function() {
-//    var t = date.tsFromIso8601('2016-05-27T12:00:00.000Z');
-//    expect(t).toBe(timestamp);
-//  });
-//});
+describe('toArray', function() {
+  it('should return an array with the date components', function() {
+    var t = date.toArray(new Date('2016-05-27T12:34:05.391Z'));
+    expect(t.join(',')).toBe('2016,5,27,12,34,5,391');
+  });
+
+  it('should return an array with the date components with padded strings', function() {
+    var t = date.toArray(new Date('2016-05-27T12:34:05.391Z').getTime(), true);
+    expect(t.join(',')).toBe('2016,05,27,12,34,05,391');
+  });
+});
 
 describe('default formats', function() {
   it('should return the default date format', function() {
