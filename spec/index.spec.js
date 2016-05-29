@@ -222,36 +222,6 @@ describe('timestampToFormat', function() {
 
     cases.forEach(testFn);
   });
-
-  it('should test a string against multiple date formats', function() {
-    // All formats
-    var a = date.timestampFromFormat('2016-05-27 12:00:00.000');
-    expect(a).toBe(timestamp);
-
-    // No formats
-    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', []);
-    expect(b).toBe(0);
-
-    // Selected formats
-    var c = date.timestampFromFormat('052716120000', ['mmddyyhhiiss', 'yymmddhhiiss']);
-    expect(c).toBe(timestamp);
-    var d = date.timestampFromFormat('052716120000', ['dd/mm/yyyy hh:ii:ss', 'mmddyyhhiiss']);
-    expect(d).toBe(timestamp);
-
-    // Not selected formats
-    var e = date.timestampFromFormat('2016-05-27 12:00:00.000', ['yymmddhhiiss']);
-    expect(e).toBe(0);
-  });
-
-  it('should call handler error with invalid format date', function() {
-    var handler = {error: function(err) {}};
-    spyOn(handler, 'error');
-    date.setErrorHandler(handler.error);
-
-    date.timestampFromFormat('052716120000', 'mmddyyhhiissxxx');
-    expect(handler.error).toHaveBeenCalled();
-
-  });
 });
 
 describe('toArray', function() {
