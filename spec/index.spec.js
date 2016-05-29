@@ -5,32 +5,187 @@ var timestamp = 1464350400000;
 
 describe('timestampFromFormat & error handler', function() {
   it('should return valid formats for dates', function() {
+    var cases = [
+      { // mmddyyyyhhiissfff
+        string: '05272016120000000',
+        formats: 'mmddyyyyhhiissfff',
+        timestamp: timestamp
+      },
+      { // yymmddhhiiss
+        string: '160527120000',
+        formats: 'yymmddhhiiss',
+        timestamp: timestamp
+      },
+      { // mmddyyhhiiss
+        string: '052716120000',
+        formats: 'mmddyyhhiiss',
+        timestamp: timestamp
+      },
+      { // yyyymmdd
+        string: '20160527',
+        formats: 'yyyymmdd',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
 
-    // Size 12
-    var a = date.timestampFromFormat('160527120000');
+      { // dd/mm/yyyy hh:ii:ss
+        string: '27/05/2016 12:00:00',
+        formats: 'dd/mm/yyyy hh:ii:ss',
+        timestamp: timestamp
+      },
+      { // with 1 digit hr
+        string: '27/05/2016 9:00:00',
+        formats: 'dd/mm/yyyy hh:ii:ss',
+        timestamp: timestamp - 3 * 3600 * 1000
+      },
+
+      { // yyyy-mm-dd hh:ii:ss.fff
+        string: '2016-05-27 12:00:00.000',
+        formats: 'yyyy-mm-dd hh:ii:ss.fff',
+        timestamp: timestamp
+      },
+      { // with 1 digit hr
+        string: '2016-05-27 9:00:00.000',
+        formats: 'yyyy-mm-dd hh:ii:ss.fff',
+        timestamp: timestamp - 3 * 3600 * 1000
+      }
+    ];
+
+    var testFn = function(testCase) {
+      var b = date.timestampFromFormat(testCase.string, testCase.formats);
+      expect(b).toBe(testCase.timestamp);
+    };
+
+    cases.forEach(testFn);
+  });
+
+  it('should test a string against multiple date formats', function() {
+    // All formats
+    var a = date.timestampFromFormat('2016-05-27 12:00:00.000');
     expect(a).toBe(timestamp);
 
-    // Size 17
-    var b = date.timestampFromFormat('05272016120000000');
-    expect(b).toBe(timestamp);
+    // No formats
+    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', []);
+    expect(b).toBe(0);
 
-    // mdyhis
-    var c = date.timestampFromFormat('052716120000', 'mdyhis');
+    // Selected formats
+    var c = date.timestampFromFormat('052716120000', ['mmddyyhhiiss', 'yymmddhhiiss']);
     expect(c).toBe(timestamp);
+    var d = date.timestampFromFormat('052716120000', ['dd/mm/yyyy hh:ii:ss', 'mmddyyhhiiss']);
+    expect(d).toBe(timestamp);
 
+    // Not selected formats
+    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', ['yymmddhhiiss']);
+    expect(b).toBe(0);
   });
 
   it('should call handler error with invalid format date', function() {
-
     var handler = {error: function(err) {}};
     spyOn(handler, 'error');
     date.setErrorHandler(handler.error);
 
-    date.timestampFromFormat('052716120000', 'mydhis');
+    date.timestampFromFormat('052716120000', 'mmddyyhhiissxxx');
     expect(handler.error).toHaveBeenCalled();
 
   });
 });
+
+describe('timestampToFormat', function() {
+  it('should return a timestamp from different formats', function() {
+    var cases = [
+      { // mmddyyyyhhiissfff
+        string: '05272016120000000',
+        format: 'mmddyyyyhhiissfff',
+        timestamp: timestamp
+      },
+      { // yymmddhhiiss
+        string: '160527120000',
+        format: 'yymmddhhiiss',
+        timestamp: timestamp
+      },
+      { // mmddyyhhiiss
+        string: '052716120000',
+        format: 'mmddyyhhiiss',
+        timestamp: timestamp
+      },
+      { // yyyymmdd
+        string: '20160527',
+        format: 'yyyymmdd',
+        timestamp: timestamp - 12 * 3600 * 1000
+      },
+
+      { // dd/mm/yyyy hh:ii:ss
+        string: '27/05/2016 12:00:00',
+        format: 'dd/mm/yyyy hh:ii:ss',
+        timestamp: timestamp
+      },
+      { // with 1 digit hr
+        string: '27/05/2016 09:00:00',
+        format: 'dd/mm/yyyy hh:ii:ss',
+        timestamp: timestamp - 3 * 3600 * 1000
+      },
+
+      { // yyyy-mm-dd hh:ii:ss.fff
+        string: '2016-05-27 12:00:00.000',
+        format: 'yyyy-mm-dd hh:ii:ss.fff',
+        timestamp: timestamp
+      },
+      { // with 1 digit hr
+        string: '2016-05-27 09:00:00.000',
+        format: 'yyyy-mm-dd hh:ii:ss.fff',
+        timestamp: timestamp - 3 * 3600 * 1000
+      }
+    ];
+
+    var testFn = function(testCase) {
+      var b = date.timestampToFormat(testCase.timestamp, testCase.format);
+      expect(b).toBe(testCase.string);
+    };
+
+    cases.forEach(testFn);
+  });
+
+  it('should test a string against multiple date formats', function() {
+    // All formats
+    var a = date.timestampFromFormat('2016-05-27 12:00:00.000');
+    expect(a).toBe(timestamp);
+
+    // No formats
+    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', []);
+    expect(b).toBe(0);
+
+    // Selected formats
+    var c = date.timestampFromFormat('052716120000', ['mmddyyhhiiss', 'yymmddhhiiss']);
+    expect(c).toBe(timestamp);
+    var d = date.timestampFromFormat('052716120000', ['dd/mm/yyyy hh:ii:ss', 'mmddyyhhiiss']);
+    expect(d).toBe(timestamp);
+
+    // Not selected formats
+    var b = date.timestampFromFormat('2016-05-27 12:00:00.000', ['yymmddhhiiss']);
+    expect(b).toBe(0);
+  });
+
+  it('should call handler error with invalid format date', function() {
+    var handler = {error: function(err) {}};
+    spyOn(handler, 'error');
+    date.setErrorHandler(handler.error);
+
+    date.timestampFromFormat('052716120000', 'mmddyyhhiissxxx');
+    expect(handler.error).toHaveBeenCalled();
+
+  });
+});
+
+//describe('toArray', function() {
+//  it('should return the default date format', function() {
+//    var t = date.toString(timestamp);
+//    expect(t).toBe('2016-05-27T12:00:00.000Z');
+//  });
+//
+//  it('should return the default date format', function() {
+//    var t = date.tsFromIso8601('2016-05-27T12:00:00.000Z');
+//    expect(t).toBe(timestamp);
+//  });
+//});
 
 describe('default formats', function() {
   it('should return the default date format', function() {
@@ -44,24 +199,6 @@ describe('default formats', function() {
   });
 });
 
-
-describe('yyyymmdd', function() {
-  it('should return a valid formatted string from a date object', function() {
-    var t1 = date.yyyymmdd(new Date(timestamp));
-    expect(t1).toBe('20160527');
-    var t2 = date.yyyymmdd(new Date(timestamp), '*');
-    expect(t2).toBe('2016*05*27');
-  });
-
-  it('should return a valid formatted string from a timestamp', function() {
-    var t1 = date.yyyymmdd(timestamp);
-    expect(t1).toBe('20160527');
-    var t2 = date.yyyymmdd(timestamp, '*');
-    expect(t2).toBe('2016*05*27');
-  });
-});
-
-
 describe('Date to number conversion', function() {
   it('should convert a date to a number', function() {
     var t = date.toNum(new Date(timestamp));
@@ -71,6 +208,157 @@ describe('Date to number conversion', function() {
   it('should convert a number to a date', function() {
     var t = date.fromNum(20160527);
     expect(t.toISOString()).toBe('2016-05-27T00:00:00.000Z');
+  });
+});
+
+describe('hrWithOffset', function() {
+  it('should return the hour of day with offset applied', function() {
+    var cases = [
+      {
+        date: '2016-05-27T18:52:53.113Z',
+        offset: null,
+        result: 18
+      },
+      {
+        date: '2016-05-27T23:52:53.113Z',
+        offset: 3 * 3600 * 1000,
+        result: 2
+      },
+      {
+        date: '2016-05-27T01:52:53.113Z',
+        offset: -1 * 3600 * 1000,
+        result: 0
+      },
+      {
+        date: '2016-05-27T02:52:53.113Z',
+        offset: -4 * 3600 * 1000,
+        result: 22
+      }
+    ];
+
+    var testFn = function testFn(testCase) {
+      var t = date.hrWithOffset(new Date(testCase.date), testCase.offset);
+      expect(t).toBe(testCase.result);
+    };
+    cases.forEach(testFn);
+  });
+});
+
+describe('timeGroup', function() {
+  it('should return a timegroup for a time with offset applied', function() {
+    var cases = [
+      {
+        date: '2016-05-27T18:52:53.113Z',
+        offset: 3 * 3600 * 1000,
+        groupSize: 2 * 60 * 1000,
+        result: '2152'
+      },
+      {
+        date: '2016-05-27T23:52:53.113Z',
+        offset: 3 * 3600 * 1000,
+        groupSize: 10 * 60 * 1000,
+        result: '0250'
+      },
+      {
+        date: '2016-05-27T01:52:53.113Z',
+        offset: -1 * 3600 * 1000,
+        groupSize: 5 * 60 * 1000,
+        result: '0050'
+      },
+      {
+        date: '2016-05-27T02:52:53.113Z',
+        offset: -4 * 3600 * 1000,
+        groupSize: 60 * 60 * 1000,
+        result: '2200'
+      }
+    ];
+
+    var testFn = function testFn(testCase) {
+      var t = date.timeGroup(
+        new Date(testCase.date).getTime(),
+        testCase.groupSize,
+        testCase.offset
+      );
+      expect(t).toBe(testCase.result);
+    };
+    cases.forEach(testFn);
+  });
+});
+
+describe('roundDateToDay', function() {
+  it('should round a time to a closed date', function() {
+    var t = date.roundDateToDay(new Date('2016-05-27T18:52:53.113Z'));
+    expect(new Date(t).toISOString()).toBe('2016-05-27T00:00:00.000Z');
+  });
+});
+
+describe('createRelativeDayRange', function() {
+  it('should return an interval', function() {
+
+    var cases = [
+      {
+        offset: -3 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 11:52:53 GMT-0300'),
+        start: -4,
+        end: 2,
+        days: [
+          '20160523', '20160524', '20160525', '20160526',
+          '20160527', '20160528', '20160529'],
+        times: [
+          '2016-05-23T03:00:00.000Z', '2016-05-24T03:00:00.000Z',
+          '2016-05-25T03:00:00.000Z', '2016-05-26T03:00:00.000Z',
+          '2016-05-27T03:00:00.000Z', '2016-05-28T03:00:00.000Z',
+          '2016-05-29T03:00:00.000Z'
+        ]
+      },
+      {
+        offset: -3 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 01:25:33 GMT-0300').getTime(),
+        start: -3,
+        end: -1,
+        days: ['20160524', '20160525', '20160526'],
+        times: ['2016-05-24T03:00:00.000Z', '2016-05-25T03:00:00.000Z', '2016-05-26T03:00:00.000Z']
+      },
+      {
+        offset: 6 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 00:00:00 GMT+0600').getTime(),
+        start: -1,
+        end: 1,
+        days: ['20160526', '20160527', '20160528'],
+        times: [
+          '2016-05-25T18:00:00.000Z', '2016-05-26T18:00:00.000Z', '2016-05-27T18:00:00.000Z']
+      },
+      {
+        offset: -6 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 11:25:33 GMT-0600').getTime(),
+        start: 0,
+        end: 0,
+        days: ['20160527'],
+        times: ['2016-05-27T06:00:00.000Z']
+      },
+      {
+        offset: -6 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 11:25:33 GMT-0600').getTime(),
+        start: 1,
+        end: 0,
+        days: [],
+        times: []
+      }
+    ];
+
+    var testFn = function testFn(testCase) {
+      var results = date.createRelativeDayRange(
+        testCase.time,
+        testCase.start, testCase.end, testCase.offset);
+
+      var days = results.map(function(r) { return r.day; });
+      var times = results.map(function(r) { return new Date(r.time).toISOString(); });
+
+      expect(days.join(',')).toBe(testCase.days.join(','));
+      expect(times.join(',')).toBe(testCase.times.join(','));
+    };
+
+    cases.forEach(testFn);
   });
 });
 
@@ -142,7 +430,6 @@ describe('Keys', function() {
   });
 
   describe('keyFormat', function() {
-
     it('should return a formatted valid date from a key', function() {
 
       var tests = function(period, cases) {

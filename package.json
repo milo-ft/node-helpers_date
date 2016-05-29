@@ -4,7 +4,9 @@
   "description": "Date utilities",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint --ext .js lib/* && jasmine-node spec"
+    "spec" : "./node_modules/.bin/jasmine-node spec",
+    "eslint" : "./node_modules/.bin/eslint --ext .js lib/*",
+    "test": "npm run eslint && npm run spec"
   },
   "author": "efigueroa@jooycar.cl",
   "license": "ISC",
