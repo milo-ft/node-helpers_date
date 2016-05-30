@@ -1,18 +1,19 @@
 # Date
 
-Jooycar helper for common date utilities
+
+
 
 
 * * *
 
-### validFormats() 
+### Date.validFormats() 
 
 Returns an array of valid formats to be parsed
 
 **Returns**: `Array`
 
 
-### timestampFromFormat(string, format) 
+### Date.timestampFromFormat(string, format) 
 
 Obtains a timestamp from specific format dates
 
@@ -25,7 +26,7 @@ Obtains a timestamp from specific format dates
 **Returns**: `number`, the timestamp
 
 
-### timestampToFormat(date, format) 
+### Date.timestampToFormat(date, format) 
 
 Returns a formatted string from a timestamp or date
 
@@ -38,7 +39,7 @@ Returns a formatted string from a timestamp or date
 **Returns**: `string`
 
 
-### toArray(date, padded) 
+### Date.toArray(date, padded) 
 
 Returns an array of parts of date from a timestamp or date
 
@@ -51,7 +52,7 @@ Returns an array of parts of date from a timestamp or date
 **Returns**: `array`
 
 
-### toString(time) 
+### Date.toString(time) 
 
 Returns the default date format
 
@@ -62,7 +63,7 @@ Returns the default date format
 **Returns**: `string`
 
 
-### tsFromIso8601(dateStr) 
+### Date.tsFromIso8601(dateStr) 
 
 Parses the default date format
 
@@ -73,7 +74,7 @@ Parses the default date format
 **Returns**: `number`
 
 
-### fromNum(num) 
+### Date.fromNum(num) 
 
 Converts a day number to a date object
 
@@ -84,7 +85,7 @@ Converts a day number to a date object
 **Returns**: `Date`
 
 
-### toNum(date) 
+### Date.toNum(date) 
 
 Converts a date to a day number
 
@@ -95,14 +96,14 @@ Converts a date to a day number
 **Returns**: `number`
 
 
-### keyPeriods() 
+### Date.keyPeriods() 
 
 Returns an array of valid periods
 
 **Returns**: `Array`
 
 
-### keyForPeriod(period, time, delta) 
+### Date.keyForPeriod(period, time, delta) 
 
 Obtains a key based on a period and a time
 
@@ -117,7 +118,7 @@ Obtains a key based on a period and a time
 **Returns**: `String`, IMPORTANT: Only support keys after year 2000
 
 
-### keyFormat(period, key) 
+### Date.keyFormat(period, key) 
 
 Format a string to a valid date input from a key
 
@@ -132,7 +133,7 @@ Format a string to a valid date input from a key
  IMPORTANT: Only support keys after year 2000
 
 
-### hrWithOffset(date, offset) 
+### Date.hrWithOffset(date, offset) 
 
 Returns the hour of a time with timezone offset
 
@@ -145,7 +146,7 @@ Returns the hour of a time with timezone offset
 **Returns**: `number`
 
 
-### timeGroup(time, groupSize, offset) 
+### Date.timeGroup(time, groupSize, offset) 
 
 Returns a key for grouping times with timezone offset
 
@@ -160,7 +161,7 @@ Returns a key for grouping times with timezone offset
 **Returns**: `string`
 
 
-### roundDateToDay(date) 
+### Date.roundDateToDay(date) 
 
 Round a date to the start of that day and returns its timestamp
 
@@ -171,7 +172,7 @@ Round a date to the start of that day and returns its timestamp
 **Returns**: `number`
 
 
-### createRelativeDayRange(time, startDelta, endDelta, timeOffset) 
+### Date.createRelativeDayRange(time, startDelta, endDelta, timeOffset) 
 
 Creates a range of days and times with a timezone offset
 
@@ -188,14 +189,14 @@ Creates a range of days and times with a timezone offset
 **Returns**: `Array`
 
 
-### now() 
+### Date.now() 
 
 Returns the current time handled by the module
 
 **Returns**: `number`
 
 
-### fixAt() 
+### Date.fixAt() 
 
 Fixes the time at a specific moment
 
@@ -205,13 +206,13 @@ Fixes the time at a specific moment
 
 
 
-### reset() 
+### Date.reset() 
 
 Resets the current time to default function
 
 
 
-### setErrorHandler(handler) 
+### Date.setErrorHandler(handler) 
 
 sets the function to handle errors
 

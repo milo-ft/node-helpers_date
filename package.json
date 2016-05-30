@@ -4,9 +4,10 @@
   "description": "Date utilities",
   "main": "index.js",
   "scripts": {
-    "spec" : "./node_modules/.bin/jasmine-node spec",
-    "eslint" : "./node_modules/.bin/eslint --ext .js lib/*",
-    "test": "npm run eslint && npm run spec"
+    "spec": "./node_modules/.bin/jasmine-node spec",
+    "eslint": "./node_modules/.bin/eslint --ext .js lib/*",
+    "test": "npm run eslint && npm run spec",
+    "generate-docs": "./node_modules/.bin/jsdox --output ./ lib/index.js && rm README.md && mv index.md README.md"
   },
   "author": "efigueroa@jooycar.cl",
   "license": "ISC",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "eslint": "^2.11.0",
     "eslint-config-es5": "^0.5.0",
-    "jasmine-node": "^1.14.5"
+    "jasmine-node": "^1.14.5",
+    "jsdox": "^0.4.9"
   }
 }
