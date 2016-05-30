@@ -7,7 +7,7 @@
     "spec": "./node_modules/.bin/jasmine-node spec",
     "eslint": "./node_modules/.bin/eslint --ext .js lib/*",
     "test": "npm run eslint && npm run spec",
-    "generate-docs": "./node_modules/.bin/jsdox --output ./ lib/index.js && rm README.md && mv index.md README.md"
+    "docs": "./node_modules/.bin/jsdox --output ./ lib/index.js && rm README.md && mv index.md README.md"
   },
   "author": "efigueroa@jooycar.cl",
   "license": "ISC",
