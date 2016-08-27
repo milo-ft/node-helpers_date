@@ -16,6 +16,11 @@ describe('timestampFromFormat & error handler', function() {
         formats: 'yymmddhhiiss',
         timestamp: timestamp
       },
+      { // yyyymmddhhiiss
+        string: '20160527120000',
+        formats: 'yyyymmddhhiiss',
+        timestamp: timestamp
+      },
       { // mmddyyhhiiss
         string: '052716120000',
         formats: 'mmddyyhhiiss',
@@ -155,6 +160,11 @@ describe('timestampToFormat', function() {
       { // yymmddhhiiss
         string: '160527120000',
         format: 'yymmddhhiiss',
+        timestamp: timestamp
+      },
+      { // yyyymmddhhiiss
+        string: '20160527120000',
+        format: 'yyyymmddhhiiss',
         timestamp: timestamp
       },
       { // mmddyyhhiiss
@@ -376,6 +386,14 @@ describe('createRelativeDayRange', function() {
         days: ['20160526', '20160527', '20160528'],
         times: [
           '2016-05-25T18:00:00.000Z', '2016-05-26T18:00:00.000Z', '2016-05-27T18:00:00.000Z']
+      },
+      {
+        offset: -3 * 3600 * 1000,
+        time: new Date('Fri May 27 2016 00:00:00 GMT-0300').getTime(),
+        start: -1,
+        end: -1,
+        days: ['20160526'],
+        times: ['2016-05-26T03:00:00.000Z']
       },
       {
         offset: -6 * 3600 * 1000,
