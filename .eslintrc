@@ -7,9 +7,10 @@
     "browser": true,
     "node": true
   },
-  "rules" : {
-    "comma-spacing" : "off",
-    "valid-jsdoc" : "off",
-    "no-param-reassign" : "off"
+  "rules": {
+    "comma-spacing": "off",
+    "valid-jsdoc": "off",
+    "indent": "off",
+    "no-param-reassign": "off"
   }
 }
